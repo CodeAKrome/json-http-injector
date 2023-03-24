@@ -3,6 +3,8 @@ Inject data into a json encoded http data stream using local or network python m
 
 Currently copying over code to support [SpaCy](https://spacy.io/) [spacytextblob](https://spacy.io/universe/project/spacy-textblob)
 
+The assesments look too embedded, currently. Looking at it.
+
 ## Sample
 
 ### configuration:
