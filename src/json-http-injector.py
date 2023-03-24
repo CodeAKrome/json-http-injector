@@ -1,5 +1,6 @@
 #!env python
 import importlib
+import json
 
 config = {
     "libname": "spacelab.spacelab",
@@ -17,4 +18,6 @@ config = {
 
 m = importlib.import_module(config["libname"])
 f = getattr(m, config["func"])
-print(f(config["src"], config["dst"], config["val"]))
+print(json.dumps(f(config["src"], config["dst"], config["val"])))
+
+
