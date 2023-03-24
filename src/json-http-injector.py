@@ -32,25 +32,33 @@ async def grok():
     f = getattr(m, config["func"])
     print(json.dumps(f(config["src"], config["dst"], config["val"])))
 
+@app.get(VER + "_config")
+async def get_config() -> dict:
+    return config
+
+@app.post(VER + "_config")
+async def post_config(new_config: dict) -> dict:
+    config = new_config
+    return config
 
 # Test routes
-@app.post("/eko")
-async def eko(info: Request):
+@app.post(VER + "/eko")
+async def eko(info: Request) -> dict:
     req_info = await info.json()
     return {"status": "SUCCESS", "data": req_info}
 
 
 @app.get(VER + "ekopath/{q}")
-def eko_path(q: str):
+def eko_path(q: str) -> str:
     return q
 
 
 @app.get(VER + "ekoqs")
-def eko_qs(qs: str):
+def eko_qs(qs: str) -> str:
     return qs
 
 
 @app.get(VER + "healz")
-def health():
+def health() -> dict:
     """Health check"""
     return {"status": "healthy"}
