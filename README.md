@@ -7,6 +7,14 @@
 
 ## Status
 
+```sh
+curl http://localhost:8000/alphaville/healz
+```
+
+```text
+{"status":"healthy"}
+```
+
 Currently copying over code to support [SpaCy](https://spacy.io/) [spacytextblob](https://spacy.io/universe/project/spacy-textblob)
 
 ## Sample
