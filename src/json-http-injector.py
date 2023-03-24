@@ -19,5 +19,3 @@ config = {
 m = importlib.import_module(config["libname"])
 f = getattr(m, config["func"])
 print(json.dumps(f(config["src"], config["dst"], config["val"])))
-
-
