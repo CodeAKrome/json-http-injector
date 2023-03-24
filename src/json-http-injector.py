@@ -26,20 +26,36 @@ app = FastAPI()
 # Constants
 VER = "/alphaville/"
 
-
 async def grok():
     m = importlib.import_module(config["libname"])
     f = getattr(m, config["func"])
     print(json.dumps(f(config["src"], config["dst"], config["val"])))
 
+
 @app.get(VER + "_config")
 async def get_config() -> dict:
+    """Return current configuration
+    
+    Returns:
+        Current configuration dictionary
+    """
     return config
+
 
 @app.post(VER + "_config")
 async def post_config(new_config: dict) -> dict:
+    """Set GLOBAL variable config
+    
+    Globals:
+        config
+        
+    Returns:
+        Configuration dictionary after update
+    """
+    global config
     config = new_config
     return config
+
 
 # Test routes
 @app.post(VER + "/eko")
