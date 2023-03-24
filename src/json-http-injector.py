@@ -4,7 +4,7 @@ import json
 
 config = {
     "libname": "spacelab.spacelab",
-    "func": "test",
+    "func": "spacewords",
     "src": "text",
     "dst": "nlp",
     "val": {

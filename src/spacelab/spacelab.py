@@ -7,7 +7,7 @@ NLP.add_pipe("spacytextblob")
 
 def ufo_to_blob(ufo: spacy.tokens.doc) -> dict:
     """Assign textblob properties polarity, subjectivity,
-       & sentiment_assessments and ents to spaCy NLP object.
+       sentiment_assessments and ents to spaCy NLP object.
 
     Args: result of running NLP() on text.
 
