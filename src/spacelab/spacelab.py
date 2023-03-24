@@ -48,5 +48,12 @@ def spacewords(src: str, dst: str, json_data: dict) -> dict:
     return json_data
 
 
-def test(text):
-    print(f"Helo {text}")
+def test(src: str, dst: str, json_data: dict) -> dict:
+    if isinstance(json_data[src], str):
+        json_data[dst] = f"touché - {json_data[src]}"
+    else:
+        out = []
+        for rec in json_data[src]:
+            out.append(f"touché - {rec}")
+        json_data[dst] = out
+    return json_data
