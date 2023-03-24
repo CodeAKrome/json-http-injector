@@ -1,11 +1,22 @@
 # json-http-injector
-# :skull: ** Danger Will Robinson, danger! **
-
-## Gamma code, Reality level: 64:1 against, and falling. Under no circumstances use this for anything ... yet.
 
 ## Inject data into a json encoded http data stream using local or network python modules which may be used to shim 3rd party REST APIs.
 
-## Status
+## :skull: ** Danger Will Robinson, danger! **
+
+## Gamma code, Reality level: 64:1 against, and falling. Under no circumstances use this for anything ... yet.
+
+## Lab notes
+
+Currently copying over code to support [SpaCy](https://spacy.io/) [spacytextblob](https://spacy.io/universe/project/spacy-textblob)
+
+### Testing
+
+```zsh
+function jpcurl {
+    curl --header "Content-Type: application/json" --request POST --data $2 $1
+}
+```
 
 ```sh
 curl http://localhost:8000/alphaville/healz
@@ -15,9 +26,16 @@ curl http://localhost:8000/alphaville/healz
 {"status":"healthy"}
 ```
 
-Currently copying over code to support [SpaCy](https://spacy.io/) [spacytextblob](https://spacy.io/universe/project/spacy-textblob)
+```sh
+jpcurl http://localhost:8000/alphaville/reflect "{\"text\":\"Freedonia, that country of cowards, led by Rufus T. Firefly, has committed a dastardly deed by cravenly surendering to the Librarian's Assc. of Communicado.\"}"
+```
 
-## Sample
+```json
+{"text":"Freedonia, that country of cowards, led by Rufus T. Firefly, has committed a dastardly deed by cravenly surendering to the Librarian's Assc. of Communicado.","nlp":{"polarity":0.0,"subjectivity":0.0,"assesments":[],"ents":[{"word":"Freedonia","label":"GPE"},{"word":"Rufus T. Firefly","label":"PERSON"},{"word":"Communicado","label":"ORG"}]}}
+```
+
+
+###  Sample
 
 ### configuration:
 

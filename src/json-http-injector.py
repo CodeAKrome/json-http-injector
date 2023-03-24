@@ -26,7 +26,7 @@ async def grok():
     print(json.dumps(f(config["src"], config["dst"], config["val"])))
 
 
-@app.post(VER + "inject")
+@app.post(VER + "reflect")
 async def reflect(info: Request):
     """Apply the current configuration to data
 
