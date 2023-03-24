@@ -6,6 +6,11 @@
 
 ## Gamma code, Reality level: 64:1 against, and falling. Under no circumstances use this for anything ... yet.
 
+## Test results
+
+### [spacelab profile](test_spacelab_profile.html)
+### [code coverage](htmlcov/index.html)
+
 ## Lab notes
 
 Currently copying over code to support [SpaCy](https://spacy.io/) [spacytextblob](https://spacy.io/universe/project/spacy-textblob)

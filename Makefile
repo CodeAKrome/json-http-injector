@@ -10,7 +10,11 @@ lint:
 	#pylint --overgeneral-exceptions '' --disable=R,C src/*.py src/spacelab/spacelab.py
 	#flake8 --max-line-length 90 app/*.py app/lib/*.py
 test:
-	python -m pytest -vv --cov=src/spacelab test_logic.py
+	coverage run --source=src -m pytest test_spacelab.py
+coverage:
+	coverage html
+profile:
+	python -m scalene --html --- -m pytest test_spacelab.py > test_spacelab_profile.html
 build:
 	docker build -t json-http-injector:latest .
 deploy:

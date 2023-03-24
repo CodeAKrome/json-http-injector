@@ -48,7 +48,7 @@ def spacewords(src: str, dst: str, json_data: dict) -> dict:
     return json_data
 
 
-def test(src: str, dst: str, json_data: dict) -> dict:
+def loopback(src: str, dst: str, json_data: dict) -> dict:
     if isinstance(json_data[src], str):
         json_data[dst] = f"touché - {json_data[src]}"
     else:
