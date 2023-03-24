@@ -3,7 +3,9 @@
 
 ## Gamma code, Reality level: 64:1 against, and falling. Under no circumstances use this for anything ... yet.
 
-# Inject data into a json encoded http data stream using local or network python modules which may be used to shim 3rd party REST APIs.
+## Inject data into a json encoded http data stream using local or network python modules which may be used to shim 3rd party REST APIs.
+
+## Status
 
 Currently copying over code to support [SpaCy](https://spacy.io/) [spacytextblob](https://spacy.io/universe/project/spacy-textblob)
 
