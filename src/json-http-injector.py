@@ -2,22 +2,30 @@
 import importlib
 import json
 from fastapi import FastAPI, Request
+import uvicorn
+import os
+
+# Constants
+VER = "/alphaville/"
 
 # TEST CODE -- DANGER!
 
+# reflection_url is another copy of this code running on port 31337 for debugging
 config = {
     "libname": "spacelab.spacelab",
     "func": "spacewords",
     "src": "text",
     "dst": "nlp",
+    "opensearch": "https://localhost:9200/_bulk",
+    "logfile": "ner_log.txt",
+    "reflection_url": "http://localhost:31337" + VER + "log/eko",
+    "port": 31337,
 }
 
 
 # Initialize long term globals
 app = FastAPI()
-
-# Constants
-VER = "/alphaville/"
+log = open(config["logfile"], "a", encoding="utf-8")
 
 
 async def grok():
@@ -67,6 +75,30 @@ async def post_config(new_config: dict) -> dict:
     return config
 
 
+# Logging routes
+@app.post(VER + "/log/close")
+async def log_close():
+    global log  # pylint: disable=global-statement disable=global-variable-not-assigned
+    log.close()  # pylint: disable=global-variable-not-assigned
+    return {"status": "ok"}
+
+
+# test this
+@app.post(VER + "/log/open")
+async def log_open():
+    global log  # pylint: disable=global-statement
+    log = open(config["logfile"], "a", encoding="utf-8")
+    return {"status": "ok"}
+
+
+@app.post(VER + "/log/eko")
+async def log_eko(info: Request):
+    req_info = await info.json()
+    log.write(f"{json.dumps(req_info)}\n")
+    log.flush()
+    return {"status": "ok"}
+
+
 # Test routes
 @app.post(VER + "eko")
 async def eko(info: Request) -> dict:
@@ -88,3 +120,10 @@ def eko_qs(qs: str) -> str:
 def health() -> dict:
     """Health check"""
     return {"status": "healthy"}
+
+
+if __name__ == "__main__":
+    if "APP_PORT" in os.environ:
+        uvicorn.run(app, host="0.0.0.0", port=int(os.getenv("APP_PORT")))
+    else:
+        uvicorn.run(app, host="0.0.0.0", port=config["port"])

@@ -6,7 +6,7 @@ format:
 	black src/*.py src/spacelab/spacelab.py
 lint:
 	pylint --disable=R,C src/*.py src/spacelab/spacelab.py
-	flake8 --max-line-length 100 --per-file-ignores=src/json-http-injector.py:F401 --per-file-ignores=src/spacelab/spacelab.py:F401 src/*.py src/spacelab/spacelab.py
+	flake8 --max-line-length 120 --per-file-ignores=src/json-http-injector.py:F401 --per-file-ignores=src/spacelab/spacelab.py:F401 src/*.py src/spacelab/spacelab.py
 	#pylint --overgeneral-exceptions '' --disable=R,C src/*.py src/spacelab/spacelab.py
 	#flake8 --max-line-length 90 app/*.py app/lib/*.py
 test:
