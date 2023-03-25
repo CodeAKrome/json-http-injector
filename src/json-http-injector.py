@@ -4,6 +4,7 @@ import json
 from fastapi import FastAPI, Request
 import uvicorn
 import os
+import requests
 
 # Constants
 VER = "/alphaville/"
@@ -20,6 +21,7 @@ config = {
     "logfile": "ner_log.txt",
     "reflection_url": "http://localhost:31337" + VER + "log/eko",
     "port": 31337,
+    "timeout": 3,
 }
 
 
@@ -48,6 +50,24 @@ async def reflect(info: Request):
     m = importlib.import_module(config["libname"])
     f = getattr(m, config["func"])
     return f(config["src"], config["dst"], req_info)
+
+
+@app.post(VER + "reflection")
+async def reflection(info: Request):
+    """Assume there's another copy of this running on the reflection port
+
+    Args:
+        Post request in json dictionary format
+
+    Returns:
+        Dictionary with dst field containing the results of applying the function to src
+    """
+    req_info = await info.json()
+    m = importlib.import_module(config["libname"])
+    f = getattr(m, config["func"])
+    rec = f(config["src"], config["dst"], req_info)
+    r = requests.put(config["reflection_url"], data=rec, timeout = config["timeout"])
+    return r
 
 
 @app.get(VER + "_config")
