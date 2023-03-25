@@ -66,7 +66,7 @@ async def reflection(info: Request):
     m = importlib.import_module(config["libname"])
     f = getattr(m, config["func"])
     rec = f(config["src"], config["dst"], req_info)
-    r = requests.put(config["reflection_url"], data=rec, timeout = config["timeout"])
+    r = requests.put(config["reflection_url"], data=rec, timeout=config["timeout"])
     return r
 
 
