@@ -1,5 +1,7 @@
 # json-http-injector
 
+[![json-http-injector](https://github.com/CodeAKrome/json-http-injector/actions/workflows/main.yml/badge.svg)](https://github.com/CodeAKrome/json-http-injector/actions/workflows/main.yml)
+
 ## Inject data into a json encoded http data stream using local or network python modules which may be used to shim 3rd party REST APIs.
 
 ## :skull: ** Danger Will Robinson, danger! **
