@@ -1,4 +1,4 @@
-name: json-http-injector
+name: alphaville
 
 on:
   push:
