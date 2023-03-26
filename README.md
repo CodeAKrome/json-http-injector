@@ -1,6 +1,6 @@
 # json-http-injector
 
-[![json-http-injector](https://github.com/CodeAKrome/json-http-injector/actions/workflows/main.yml/badge.svg)](https://github.com/CodeAKrome/json-http-injector/actions/workflows/main.yml)
+[![Alphaville](https://github.com/CodeAKrome/json-http-injector/actions/workflows/main.yml/badge.svg)](https://github.com/CodeAKrome/json-http-injector/actions/workflows/main.yml)
 
 ![alphaville](https://user-images.githubusercontent.com/44734955/227808001-3c82808d-3909-488a-bb6f-385c8c19edb8.png)
 ## Inject data into a json encoded http data stream using local or network python modules which may be used to shim 3rd party REST APIs.
