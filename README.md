@@ -13,6 +13,7 @@
 ## FYI
 
 Json doesn't return the same values as python's print command. Instead of `None` it returns `null` as one of the `assesments` values. This will cause issues if you, as I, try to cut and paste things.
+
 ### Exempli Gratia
 
 ```sh
@@ -24,6 +25,7 @@ sample/curl_json.sh
 ```
 
 Pretty JSON
+
 ```json
 {
    "nlp" : {
@@ -50,11 +52,13 @@ Pretty JSON
 }
 ```
 
+I can't show a python `json_pp` example because, aside from complaining about single quotes, it rejects `None` as a valid value. Simply be aware.
+
 ```sh
 sample/requests_json.py
 ```
 
-```text
+```json
 {"text": "The reign of Spain mainly affected the plains.", "nlp": {"polarity": 0.16666666666666666, "subjectivity": 0.3333333333333333, "assesments": [[["mainly"], 0.16666666666666666, 0.3333333333333333, null]], "ents": [{"word": "Spain", "label": "GPE"}]}}
 ```
 
