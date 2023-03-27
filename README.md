@@ -64,6 +64,8 @@ sample/requests_json.py
 
 ## Lab notes
 
+Containerization begins.
+
 Currently copying over code to support [SpaCy](https://spacy.io/) [spacytextblob](https://spacy.io/universe/project/spacy-textblob)
 
 ### Testing
