@@ -27,7 +27,7 @@ sample/requests_json.py
 ```
 
 ```text
-{'text': 'The reign of Spain mainly affected the plains.', 'nlp': {'polarity': 0.16666666666666666, 'subjectivity': 0.3333333333333333, 'assesments': [[['mainly'], 0.16666666666666666, 0.3333333333333333, None]], 'ents': [{'word': 'Spain', 'label': 'GPE'}]}}
+{"text": "The reign of Spain mainly affected the plains.", "nlp": {"polarity": 0.16666666666666666, "subjectivity": 0.3333333333333333, "assesments": [[["mainly"], 0.16666666666666666, 0.3333333333333333, null]], "ents": [{"word": "Spain", "label": "GPE"}]}}
 ```
 
 
