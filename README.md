@@ -9,6 +9,28 @@
 
 ## Gamma code, Reality level: 64:1 against, and falling. Under no circumstances use this for anything ... yet.
 
+## Curl problem
+Curl doesn't return the same values as python's requests library. Instead of `None` it returns `null` as one of the `assesments` values.
+
+### E.g.
+
+```sh
+sample/curl_json.sh
+```
+
+```text
+{"text":"The reign of Spain mainly affected the plains.","nlp":{"polarity":0.16666666666666666,"subjectivity":0.3333333333333333,"assesments":[[["mainly"],0.16666666666666666,0.3333333333333333,null]],"ents":[{"word":"Spain","label":"GPE"}]}}
+```
+
+```sh
+sample/requests_json.py
+```
+
+```text
+{'text': 'The reign of Spain mainly affected the plains.', 'nlp': {'polarity': 0.16666666666666666, 'subjectivity': 0.3333333333333333, 'assesments': [[['mainly'], 0.16666666666666666, 0.3333333333333333, None]], 'ents': [{'word': 'Spain', 'label': 'GPE'}]}}
+```
+
+
 ## Lab notes
 
 Currently copying over code to support [SpaCy](https://spacy.io/) [spacytextblob](https://spacy.io/universe/project/spacy-textblob)
@@ -17,7 +39,7 @@ Currently copying over code to support [SpaCy](https://spacy.io/) [spacytextblob
 
 ```zsh
 function jpcurl {
-    curl --header "Content-Type: application/json" --request POST --data $2 $1
+    curl -H "Accept: application/json" -H "Content-Type: application/json" -X POST -d $2 $1
 }
 ```
 
