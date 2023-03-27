@@ -22,7 +22,7 @@ function jpcurl {
 ```
 
 ```sh
-curl http://localhost:8000/alphaville/healz
+curl http://localhost:31337/alphaville/healz
 ```
 
 ```text
@@ -30,7 +30,7 @@ curl http://localhost:8000/alphaville/healz
 ```
 
 ```sh
-jpcurl http://localhost:8000/alphaville/reflect "{\"text\":\"Freedonia, that country of cowards, led by Rufus T. Firefly, has committed a dastardly deed by cravenly surendering to the Librarian's Assc. of Communicado.\"}"
+jpcurl http://localhost:31337/alphaville/reflect "{\"text\":\"Freedonia, that country of cowards, led by Rufus T. Firefly, has committed a dastardly deed by cravenly surendering to the Librarian's Assc. of Communicado.\"}"
 ```
 
 ```json

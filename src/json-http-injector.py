@@ -49,7 +49,8 @@ async def reflect(info: Request):
     req_info = await info.json()
     m = importlib.import_module(config["libname"])
     f = getattr(m, config["func"])
-    return f(config["src"], config["dst"], req_info)
+    req_info[config["dst"]] = f(req_info[config["src"]])
+    return req_info
 
 
 @app.post(VER + "reflection")

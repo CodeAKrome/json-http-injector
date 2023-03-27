@@ -25,27 +25,22 @@ def ufo_to_blob(ufo: spacy.tokens.doc) -> dict:
     return blob
 
 
-def spacewords(src: str, dst: str, json_data: dict) -> dict:
-    """Run json_data[src] text through spacytextblob
-        and add/replace json_data[dst] with the results.
+def spacewords(text: str | list) -> str:
+    """Run text through spacytextblob and return results.
 
     Args:
-        src: name of top level field containing data to analize.
-        dst: name of top level field to hold results of analysis.
-        json_data: record into which data is to be inserted.
+        text: What to process. Full sentence.
 
     Returns:
-        Dictionary with dst field populated with the results
-        of src field spacytextblob-ification
+        Dictionary with fields populated with the results or processing text
     """
-    if isinstance(json_data[src], str):
-        json_data[dst] = ufo_to_blob(NLP(json_data[src]))
+    if isinstance(text, str):
+        return ufo_to_blob(NLP(text))
     else:
         out = []
-        for rec in json_data[src]:
-            out.append(ufo_to_blob(NLP(rec)))
-        json_data[dst] = out
-    return json_data
+        for sent in text:
+            out.append(ufo_to_blob(NLP(sent)))
+        return out
 
 
 def loopback(src: str, dst: str, json_data: dict) -> dict:
