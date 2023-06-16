@@ -1,4 +1,4 @@
-#!env python
+#!env python3
 import importlib
 import json
 from fastapi import FastAPI, Request
@@ -7,7 +7,7 @@ import os
 import requests
 
 # Constants
-VER = "/alphaville/"
+VER = "/v0/"
 
 # TEST CODE -- DANGER!
 
@@ -33,19 +33,12 @@ log = open(config["logfile"], "a", encoding="utf-8")
 async def grok():
     m = importlib.import_module(config["libname"])
     f = getattr(m, config["func"])
-    print(json.dumps(f(config["src"], config["dst"], config["val"])))
+    #print(json.dumps(f(config["src"], config["dst"], config["val"])))
+    return {"test": f"m {type(m)} f {type(f)}"}
 
 
-@app.post(VER + "reflect")
+@app.post(VER + "map")
 async def reflect(info: Request):
-    """Apply the current configuration to data
-
-    Args:
-        Post request in json dictionary format
-
-    Returns:
-        Dictionary with dst field containing the results of applying the function to src
-    """
     req_info = await info.json()
     m = importlib.import_module(config["libname"])
     f = getattr(m, config["func"])
