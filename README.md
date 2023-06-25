@@ -1,6 +1,6 @@
 # micro-gp
 
-# Python FastAPI based microservice using dyna-loaded libraries to perform operations on JSON encoded data with optional HTTP result forwarding.
+# FastAPI based microservice using dyna-loaded libraries to perform operations on JSON encoded data with optional HTTP result forwarding.
 
 ## Version: v0
 
