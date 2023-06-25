@@ -1,143 +1,131 @@
 #!env python3
 import importlib
-import json
 from fastapi import FastAPI, Request
 import uvicorn
 import os
 import requests
 
-# Constants
 VER = "/v0/"
 
-# TEST CODE -- DANGER!
-
-# reflection_url is another copy of this code running on port 31337 for debugging
-config = {
-    "libname": "spacelab.spacelab",
-    "func": "spacewords",
-    "src": "text",
-    "dst": "nlp",
-    "opensearch": "https://localhost:9200/_bulk",
-    "logfile": "ner_log.txt",
-    "reflection_url": "http://localhost:31337" + VER + "log/eko",
-    "port": 31337,
-    "timeout": 3,
+default_config = {
+    "inject_libname": "lib.spacelab",
+    "inject_func": "spacewords",
+    "inject_src": "text",
+    "inject_dst": "nlp",
+    "inject_port": 31337,
+    "inject_timeout": 3,
 }
 
-
-# Initialize long term globals
 app = FastAPI()
-log = open(config["logfile"], "a", encoding="utf-8")
 
 
-async def grok():
-    m = importlib.import_module(config["libname"])
-    f = getattr(m, config["func"])
-    #print(json.dumps(f(config["src"], config["dst"], config["val"])))
-    return {"test": f"m {type(m)} f {type(f)}"}
+def configure(new_config: dict) -> dict:
+    ints = ["inject_port", "inject_timeout"]
+    for key in new_config.keys():
+        uppercase_key = key.upper()
+        if uppercase_key in os.environ:
+            if key in ints:
+                new_config[key] = int(os.environ[uppercase_key])
+            else:
+                new_config[key] = os.environ[uppercase_key]
+    if "inject_logfile" in new_config:
+        new_config["log_fh"] = open(new_config["inject_logfile"], "a", encoding="utf-8")
+    return new_config
 
 
-@app.post(VER + "map")
-async def reflect(info: Request):
-    req_info = await info.json()
-    m = importlib.import_module(config["libname"])
-    f = getattr(m, config["func"])
-    req_info[config["dst"]] = f(req_info[config["src"]])
-    return req_info
+def load_function(new_config: dict) -> dict:
+    module = importlib.import_module(new_config["inject_libname"])
+    new_config["function"] = getattr(module, new_config["inject_func"])
+    return new_config
 
 
-@app.post(VER + "reflection")
-async def reflection(info: Request):
-    """Assume there's another copy of this running on the reflection port
-
-    Args:
-        Post request in json dictionary format
-
-    Returns:
-        Dictionary with dst field containing the results of applying the function to src
-    """
-    req_info = await info.json()
-    m = importlib.import_module(config["libname"])
-    f = getattr(m, config["func"])
-    rec = f(config["src"], config["dst"], req_info)
-    r = requests.put(config["reflection_url"], data=rec, timeout=config["timeout"])
-    return r
-
-
-@app.get(VER + "_config")
+@app.get(VER + "configure")
 async def get_config() -> dict:
-    """Return current configuration
-
-    Returns:
-        Current configuration dictionary
-    """
     return config
 
 
-@app.post(VER + "_config")
+@app.post(VER + "configure")
 async def post_config(new_config: dict) -> dict:
-    """Set GLOBAL variable config
-
-    Globals:
-        config
-
-    Returns:
-        Configuration dictionary after update
-    """
-    global config  # pylint: disable=global-statement
     config = new_config
     return config
 
 
-# Logging routes
-@app.post(VER + "/log/close")
-async def log_close():
-    global log  # pylint: disable=global-statement disable=global-variable-not-assigned
-    log.close()  # pylint: disable=global-variable-not-assigned
+# ----- Exec Function -----
+
+
+@app.put(VER + "f")
+async def exec_function(req: Request):
+    data = await req.json()
+    return config["function"](data)
+
+
+@app.post(VER + "f")
+async def fwd(req: Request):
+    data = await req.json()
+    result = config["function"](data)
+    if "inject_fwd" in config:
+        ip = config["inject_fwd"]
+    else:
+        if "inject_fwd" in result:
+            ip = data["inject_fwd"]
+        else:
+            raise ValueError("No forwarding address.")
+    return requests.put(ip, data=result, timeout=config["inject_timeout"])
+
+
+# ----- Logging -----
+
+
+@app.post(VER + "log")
+async def open_log(req: Request):
+    logfile = await req.text()
+    config["log_fh"] = open(logfile, "a", encoding="utf-8")
+    config["inject_logfile"] = logfile
+    return {"status": "ok", "logfile": config["inject_logfile"]}
+
+# fix 
+@app.put(VER + "log")
+async def set_logging(req: Request):
+    data = await req.json()
+    config["log_fh"].flush()
+    if "log" in data:
+        config["log"] = data["log"]
+    return {"status": "ok", "log": config["log"]}
+
+
+@app.delete(VER + "log")
+async def close_log():
+    config["log_fh"].flush()
+    config["log_fh"].close()  # pylint: disable=global-variable-not-assigned
     return {"status": "ok"}
 
 
-# test this
-@app.post(VER + "/log/open")
-async def log_open():
-    global log  # pylint: disable=global-statement
-    log = open(config["logfile"], "a", encoding="utf-8")
+# ----- Test -----
+
+
+@app.get(VER + "health")
+def eko_health() -> dict:
     return {"status": "ok"}
 
 
-@app.post(VER + "/log/eko")
-async def log_eko(info: Request):
-    req_info = await info.json()
-    log.write(f"{json.dumps(req_info)}\n")
-    log.flush()
-    return {"status": "ok"}
-
-
-# Test routes
 @app.post(VER + "eko")
-async def eko(info: Request) -> dict:
-    req_info = await info.json()
-    return {"status": "SUCCESS", "data": req_info}
+async def eko_post(req: Request) -> dict:
+    data = await req.json()
+    return {"status": "ok", "data": data}
 
 
-@app.get(VER + "ekopath/{q}")
-def eko_path(q: str) -> str:
-    return {"status": "SUCCESS", "data": q}
+@app.get(VER + "ekopath/{data}")
+def eko_pathdata(data: str) -> dict:
+    return {"status": "ok", "data": data}
 
 
 @app.get(VER + "ekoqs")
-def eko_qs(qs: str) -> str:
-    return {"status": "SUCCESS", "data": qs}
+def eko_querystring(querystring: str) -> dict:
+    return {"status": "ok", "data": querystring}
 
 
-@app.get(VER + "healz")
-def health() -> dict:
-    """Health check"""
-    return {"status": "healthy"}
-
+# ----- MAIN -----
 
 if __name__ == "__main__":
-    if "APP_PORT" in os.environ:
-        uvicorn.run(app, host="0.0.0.0", port=int(os.getenv("APP_PORT")))
-    else:
-        uvicorn.run(app, host="0.0.0.0", port=config["port"])
+    config = load_function(configure(default_config))
+    uvicorn.run(app, host="0.0.0.0", port=config["inject_port"])

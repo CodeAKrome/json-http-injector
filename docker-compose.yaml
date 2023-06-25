@@ -1,0 +1,24 @@
+services:
+  jhi:
+    image: "json-http-injector:latest"
+    container_name: "jhi"
+    ports:
+      - "31337:31337"
+    networks:
+      - botnet
+
+  api-test:
+    image: postman/newman:alpine
+    depends_on:
+      - jhi
+    entrypoint: [ "" ]
+    volumes:
+      - $PWD/postman:/etc/newman
+    command: >
+      newman run py-micro-gp.postman_collection.json 
+      --environment="py-micro-gp.postman_environment.json" 
+      --reporters cli,junit 
+      --reporter-junit-export /etc/newman/api-results.xml
+
+networks:
+  botnet:
