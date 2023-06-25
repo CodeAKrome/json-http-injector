@@ -1,7 +1,7 @@
 services:
   jhi:
-    image: "json-http-injector:latest"
-    container_name: "jhi"
+    image: "micro-gp:latest"
+    container_name: "micro-gp"
     ports:
       - "31337:31337"
     networks:
